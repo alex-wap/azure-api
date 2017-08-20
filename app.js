@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-require('./server/config/mongoose.js');
+require('./config/mongoose.js');
 
 var routes = require('./routes/index');
 
