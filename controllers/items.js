@@ -4,18 +4,19 @@ var Item = mongoose.model('Item');
 module.exports = {
   index: function(req, res) {
     Item.find({}, function(err, items) {
-      items.unshift({"instructions" : ["Route '/' will serve up the full collection of people.",
-                                 "Route '/new/:item/' will add a item into the database. can be used for blank spaces, so adding Steve Jobs to our database, you'd type in the URL 'api.alexw.tech/new/Steve Jobs'.",
-                                 "Route '/remove/:item/' will delete a item from the database.",
+      items.unshift({"instructions" : ["Route '/' will serve up the full collection of items.",
+                                 "Route '/new/:item/' will add an item into the database. Spaces are preserved e.g. 'domain.com/new/buy groceries' => buy groceries.",
+                                 "Route '/remove/:item/' will delete an item from the database.",
                                  "Route '/:item' will bring up the document of that particular item."
                                  ]});
-      console.log(items);
+      // console.log(items);
       res.json(items);
     })
   },
   create: function(req, res) {
+    console.log("creating:", req.params.item);
     var item = req.params.item
-    var item = new Item({item: item});
+    var item = new Item({name: item});
     item.save(function(err) {
       if(err) {
         console.log('something went wrong');
@@ -28,7 +29,7 @@ module.exports = {
   show: function(req, res) {
     console.log(req.params)
     var item = req.params.item
-    Item.find({item:item}, function(err, items) {
+    Item.find({name:item}, function(err, items) {
       if(err) {
         console.log('something went wrong');
       } else { 
@@ -40,7 +41,7 @@ module.exports = {
   destroy: function(req, res) {
     console.log(req.params)
     var item = req.params.item
-    Item.remove({item:item}, function(err) {
+    Item.remove({name:item}, function(err) {
       if(err) {
         console.log('something went wrong');
       } else{
